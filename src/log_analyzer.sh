@@ -14,14 +14,14 @@ if [ ! -f "$LOG_FILE" ]; then
   exit 1
 fi
 
-# Общее количество записей (число строк в файле)
+# Общее количество записей в файле лога
 total_records=$(wc -l < "$LOG_FILE")
 
 # Количество уникальных файлов
-unique_files=$(awk -F' - ' '{print $1}' "$LOG_FILE" | sort | uniq | wc -l)
+unique_files=$(awk '{ print $1 }' "$LOG_FILE" | sort | uniq | wc -l)
 
-# Количество изменений, приведших к изменению хэш-суммы
-hash_changes=$(awk -F' - ' '{print $1, $5}' "$LOG_FILE" | sort | uniq | wc -l)
+# Количество изменений, приведших к изменению hash файла
+changed_hashes=$(awk -F' - ' '{ print $4 }' "$LOG_FILE" | sort | uniq | wc -l)
 
-# Вывод результатов
-echo "$total_records $unique_files $hash_changes"
+# Вывод трех чисел
+echo "$total_records $unique_files $changed_hashes"
